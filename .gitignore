@@ -1,0 +1,26 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Node / SvelteKit
+app/node_modules/
+app/.svelte-kit/
+app/build/
+app/.vercel/
+app/.netlify/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# PocketBase data
+pb_data/

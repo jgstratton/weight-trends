@@ -10,13 +10,13 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 0 — Project Scaffolding
 
-- [ ] Initialize SvelteKit project (`create-svelte`) with TypeScript
-- [ ] Add `.gitignore` for Node, SvelteKit, PocketBase data
-- [ ] Create top-level `docker-compose.yml` with two services:
-  - `pocketbase` — official PocketBase image, volume for `pb_data`
+- [x] Initialize SvelteKit project with TypeScript
+- [x] Add `.gitignore` for Node, SvelteKit, PocketBase data
+- [x] Create top-level `docker-compose.yml` with two services:
+  - `pocketbase` — locally built image from official PocketBase Dockerfile template, volume for `pb_data`
   - `app` — Node-based image running SvelteKit (node adapter)
-- [ ] Create `Dockerfile` for the SvelteKit app (multi-stage: build → production)
-- [ ] Verify `docker compose up` brings both services up and they can communicate
+- [x] Create `Dockerfile` for the SvelteKit app (multi-stage: build → production)
+- [x] Verify `docker compose up` brings both services up and they can communicate
 
 ## Phase 1 — PocketBase Setup
 

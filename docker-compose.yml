@@ -1,0 +1,25 @@
+services:
+  pocketbase:
+    build:
+      context: .
+      dockerfile: pocketbase/Dockerfile
+    ports:
+      - "8090:8090"
+    volumes:
+      - pb_data:/pb/pb_data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pocketbase
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      PUBLIC_POCKETBASE_URL: http://pocketbase:8090
+    ports:
+      - "3000:3000"
+
+volumes:
+  pb_data:
