@@ -20,8 +20,8 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 1 — PocketBase Setup
 
-- [ ] Configure PocketBase admin account (first-run setup)
-- [ ] Create collections via PocketBase migration or admin UI:
+- [x] Configure PocketBase admin account (first-run setup)
+- [x] Create collections via PocketBase migration or admin UI:
   - **users** (built-in auth collection) — enable email/magic-link auth
   - **weights** — fields: `user` (relation → users), `value` (number, kg/lbs), `date` (date), `notes` (text, optional)
 - [ ] Enable magic-link (OTP) authentication on the users collection
