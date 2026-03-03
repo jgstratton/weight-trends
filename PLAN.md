@@ -33,21 +33,21 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 2 - SvelteKit <-> Database Integration
 
-- [ ] Remove PocketBase SDK and related files (`src/lib/pocketbase.ts`, `pb_migrations/`)
-- [ ] Create server-only DB helper module (`src/lib/db/index.ts`) - exports the Drizzle client
-- [ ] Update `hooks.server.ts` to validate session cookie on every request and attach `locals.user`
-- [ ] Update `+layout.server.ts` to pass `user` from `locals` to the client
+- [x] Remove PocketBase SDK and related files (`src/lib/pocketbase.ts`, `pb_migrations/`)
+- [x] Create server-only DB helper module (`src/lib/db/index.ts`) - exports the Drizzle client
+- [x] Update `hooks.server.ts` to validate session cookie on every request and attach `locals.user`
+- [x] Update `+layout.server.ts` to pass `user` from `locals` to the client
 
 ## Phase 3 - Authentication (Manual OTP via Email)
 
-- [ ] Install email sending dependency (e.g., `nodemailer` or `@sendgrid/mail`)
-- [ ] Build `/login` page - Step 1: email entry
+- [x] Install email sending dependency (sendgrid)
+- [x] Build `/login` page - Step 1: email entry
   - POST action: look up or create user by email, generate a 6-digit code, store hashed code + expiry in `otp_tokens`, send email with code
-- [ ] Build `/login` page - Step 2: code verification (shown after email is sent)
+- [x] Build `/login` page - Step 2: code verification (shown after email is sent)
   - POST action: look up unexpired, unused token for email, compare code (constant-time), mark token as used, create a new row in `sessions`, set a signed `session_id` cookie (HttpOnly, Secure, SameSite=Strict)
-- [ ] On successful auth, redirect to `/` (dashboard)
-- [ ] Build logout action: delete session row from DB, clear cookie
-- [ ] Protect all routes except `/login` in `hooks.server.ts` (redirect if no valid session)
+- [x] On successful auth, redirect to `/` (dashboard)
+- [x] Build logout action: delete session row from DB, clear cookie
+- [x] Protect all routes except `/login` in `hooks.server.ts` (redirect if no valid session)
 
 ## Phase 4 - Weight Logging
 
