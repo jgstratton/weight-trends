@@ -22,5 +22,5 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
-# PocketBase data
-pb_data/
+# Postgres local data (if running outside Docker)
+pg_data/

@@ -1,27 +1,35 @@
 services:
-  pocketbase:
-    build:
-      context: .
-      dockerfile: pocketbase/Dockerfile
-    ports:
-      - "8090:8090"
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: weighttrends
+      POSTGRES_PASSWORD: weighttrends
+      POSTGRES_DB: weighttrends
     volumes:
-      - pb_data:/pb/pb_data
-      - ./pb_migrations:/pb/pb_migrations
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U weighttrends"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - pocketbase
+      postgres:
+        condition: service_healthy
     environment:
       HOST: 0.0.0.0
       PORT: 3000
-      PUBLIC_POCKETBASE_URL: http://localhost:8090
-      POCKETBASE_URL: http://pocketbase:8090
+      DATABASE_URL: postgres://weighttrends:weighttrends@postgres:5432/weighttrends
     ports:
       - "3000:3000"
+    restart: unless-stopped
 
 volumes:
-  pb_data:
+  pg_data:

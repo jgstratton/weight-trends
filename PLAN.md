@@ -1,65 +1,65 @@
-# Weight Trends — Implementation Plan
+﻿# Weight Trends - Implementation Plan
 
 ## Overview
 
 A self-hosted web app for tracking body weight and visualizing trends over time.
 
-**Tech Stack:** SvelteKit · PocketBase · Chart.js · Docker Compose
+**Tech Stack:** SvelteKit - PostgreSQL - Drizzle ORM - Chart.js - Docker Compose
 
 ---
 
-## Phase 0 — Project Scaffolding
+## Phase 0 - Project Scaffolding
 
 - [x] Initialize SvelteKit project with TypeScript
-- [x] Add `.gitignore` for Node, SvelteKit, PocketBase data
-- [x] Create top-level `docker-compose.yml` with two services:
-  - `pocketbase` — locally built image from official PocketBase Dockerfile template, volume for `pb_data`
-  - `app` — Node-based image running SvelteKit (node adapter)
-- [x] Create `Dockerfile` for the SvelteKit app (multi-stage: build → production)
+- [x] Add `.gitignore` for Node, SvelteKit artifacts
+- [x] Update top-level `docker-compose.yml` with two services:
+  - `postgres` - official Postgres image, volume for data persistence
+  - `app` - Node-based image running SvelteKit (node adapter)
+- [x] Create `Dockerfile` for the SvelteKit app (multi-stage: build to production)
 - [x] Verify `docker compose up` brings both services up and they can communicate
 
-## Phase 1 — PocketBase Setup
+## Phase 1 - Database Setup (Drizzle + PostgreSQL)
 
-- [x] Configure PocketBase admin account (first-run setup)
-- [x] Create collections via PocketBase migration or admin UI:
-  - **users** (built-in auth collection) — enable email/magic-link auth
-  - **weights** — fields: `user` (relation → users), `value` (number, kg/lbs), `date` (date), `notes` (text, optional)
-- [x] Enable magic-link (OTP) authentication on the users collection
-- [x] Set collection rules so users can only CRUD their own weight records:
-  - List/View: `@request.auth.id = user`
-  - Create: `@request.auth.id = @request.data.user`
-  - Update/Delete: `@request.auth.id = user`
+- [ ] Install dependencies: `drizzle-orm`, `postgres` (postgres.js driver), `drizzle-kit`
+- [ ] Create `drizzle.config.ts` at the app root pointing at the Postgres connection string
+- [ ] Define schema in `src/lib/db/schema.ts`:
+  - **users** - `id` (uuid, pk), `email` (text, unique), `created_at`
+  - **sessions** - `id` (uuid, pk), `user_id` (fk -> users), `expires_at`, `created_at`
+  - **otp_tokens** - `id` (uuid, pk), `user_id` (fk -> users), `code` (text), `expires_at`, `used_at`
+  - **weights** - `id` (uuid, pk), `user_id` (fk -> users), `value` (numeric), `date` (date), `notes` (text, nullable), `created_at`
+- [ ] Create a Drizzle client instance (`src/lib/db/index.ts`)
+- [ ] Generate initial migration: `drizzle-kit generate`
+- [ ] Apply migrations on startup (or via a separate migrate script run before the app starts)
 
-## Phase 2 — SvelteKit ↔ PocketBase Integration
+## Phase 2 - SvelteKit <-> Database Integration
 
-- [x] Install PocketBase JS SDK (`pocketbase`)
-- [x] Create a shared PocketBase client instance (`src/lib/pocketbase.ts`)
-- [x] Add an auth store that syncs PocketBase auth state with a Svelte store
-- [x] Create a layout load function that restores auth from cookie on SSR
+- [ ] Remove PocketBase SDK and related files (`src/lib/pocketbase.ts`, `pb_migrations/`)
+- [ ] Create server-only DB helper module (`src/lib/db/index.ts`) - exports the Drizzle client
+- [ ] Update `hooks.server.ts` to validate session cookie on every request and attach `locals.user`
+- [ ] Update `+layout.server.ts` to pass `user` from `locals` to the client
 
-## Phase 3 — Authentication (Magic Link)
+## Phase 3 - Authentication (Manual OTP via Email)
 
-- [x] Build `/login` page:
-  - Email input + "Send Magic Link" button
-  - Calls `pb.collection('users').requestOTP(email)`
-- [x] Build OTP verification step on the same page:
-  - Code input that appears after email is sent
-  - Calls `pb.collection('users').authWithOTP(otpId, code)`
-- [x] On successful auth, redirect to `/` (dashboard)
-- [x] Add logout button in nav/layout
-- [x] Protect all routes except `/login` with an auth guard (redirect if not logged in)
+- [ ] Install email sending dependency (e.g., `nodemailer` or `@sendgrid/mail`)
+- [ ] Build `/login` page - Step 1: email entry
+  - POST action: look up or create user by email, generate a 6-digit code, store hashed code + expiry in `otp_tokens`, send email with code
+- [ ] Build `/login` page - Step 2: code verification (shown after email is sent)
+  - POST action: look up unexpired, unused token for email, compare code (constant-time), mark token as used, create a new row in `sessions`, set a signed `session_id` cookie (HttpOnly, Secure, SameSite=Strict)
+- [ ] On successful auth, redirect to `/` (dashboard)
+- [ ] Build logout action: delete session row from DB, clear cookie
+- [ ] Protect all routes except `/login` in `hooks.server.ts` (redirect if no valid session)
 
-## Phase 4 — Weight Logging
+## Phase 4 - Weight Logging
 
 - [ ] Build `/log` page (or inline form on dashboard):
   - Inputs: weight value (number), date (defaults to today), optional notes
-  - Submit creates a record in the `weights` collection
+  - POST action inserts a row into the `weights` table for `locals.user.id`
 - [ ] Build weight history list on the dashboard:
-  - Fetch user's weight records sorted by date descending
+  - Server load function queries `weights` for the current user, sorted by date descending
   - Display as a simple table/list with date, value, notes
-- [ ] Add ability to edit and delete entries from the list
+- [ ] Add ability to edit and delete entries (form actions with `?/update` and `?/delete`)
 
-## Phase 5 — Chart / Trend Visualization
+## Phase 5 - Chart / Trend Visualization
 
 - [ ] Install Chart.js and `svelte-chartjs` (or use Chart.js directly via canvas)
 - [ ] Build a line chart component (`src/lib/components/WeightChart.svelte`):
@@ -70,17 +70,21 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 - [ ] Place chart prominently on the dashboard above/beside the log list
 - [ ] Make chart responsive and handle empty/sparse data gracefully
 
-## Phase 6 — Polish & Deploy
+## Phase 6 - Polish & Deploy
 
-- [ ] Basic responsive layout (mobile-friendly — most logging happens on phones)
+- [ ] Basic responsive layout (mobile-friendly - most logging happens on phones)
 - [ ] Loading states and error handling on all data operations
-- [ ] Environment variable config (`PUBLIC_POCKETBASE_URL`, etc.)
+- [ ] Environment variable config:
+  - `DATABASE_URL` - Postgres connection string
+  - `SESSION_SECRET` - secret for signing session cookies
+  - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` - email config
 - [ ] Final `docker-compose.yml` tuning:
-  - Health checks
+  - Health checks (Postgres `pg_isready`, app waits for DB)
   - Restart policies
-  - Volume mounts for PocketBase data persistence
+  - Volume mount for Postgres data persistence
+  - Run `drizzle-kit migrate` as part of the app entrypoint or a one-shot init container
 - [ ] Add a `README.md` with setup/run instructions
-- [ ] Tag as `v0.1.0` — MVP complete
+- [ ] Tag as `v0.1.0` - MVP complete
 
 ---
 
@@ -88,37 +92,44 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ```
 weight-trends-2/
-├── docker-compose.yml
-├── Dockerfile                  # SvelteKit app image
-├── app/                        # SvelteKit project root
-│   ├── package.json
-│   ├── svelte.config.js
-│   ├── vite.config.ts
-│   ├── tsconfig.json
-│   └── src/
-│       ├── app.html
-│       ├── app.css
-│       ├── lib/
-│       │   ├── pocketbase.ts       # PB client + auth store
-│       │   └── components/
-│       │       └── WeightChart.svelte
-│       └── routes/
-│           ├── +layout.svelte      # Nav bar, auth guard
-│           ├── +layout.server.ts   # Restore auth from cookie
-│           ├── +page.svelte        # Dashboard (chart + log list)
-│           ├── login/
-│           │   └── +page.svelte    # Magic link login
-│           └── log/
-│               └── +page.svelte    # Weight entry form
-├── pb_migrations/              # Optional: PocketBase migration files
-└── PLAN.md                     # ← You are here
++-- docker-compose.yml
++-- Dockerfile                  # SvelteKit app image
++-- app/                        # SvelteKit project root
+|   +-- package.json
+|   +-- drizzle.config.ts       # Drizzle Kit config
+|   +-- svelte.config.js
+|   +-- vite.config.ts
+|   +-- tsconfig.json
+|   +-- drizzle/                # Generated SQL migration files (committed)
+|   +-- src/
+|       +-- app.html
+|       +-- app.css
+|       +-- hooks.server.ts     # Session validation, locals.user
+|       +-- lib/
+|       |   +-- db/
+|       |   |   +-- index.ts        # Drizzle client instance
+|       |   |   +-- schema.ts       # Table definitions
+|       |   +-- components/
+|       |       +-- WeightChart.svelte
+|       +-- routes/
+|           +-- +layout.svelte      # Nav bar, logout button
+|           +-- +layout.server.ts   # Pass user to client
+|           +-- +page.svelte        # Dashboard (chart + log list)
+|           +-- login/
+|           |   +-- +page.svelte    # OTP email login (two-step)
+|           +-- log/
+|               +-- +page.svelte    # Weight entry form
++-- PLAN.md                     # <- You are here
 ```
 
 ## Key Decisions
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| PocketBase auth method | Magic link (OTP via email) | Passwordless, simple UX |
+| Database | PostgreSQL | Robust, self-hostable, standard SQL |
+| ORM / query builder | Drizzle ORM | TypeScript-first, lightweight, close to SQL, great migration tooling |
+| Auth method | Manual OTP via email (6-digit code) | Passwordless, simple UX - no PocketBase dependency |
+| Session storage | Server-side DB sessions + HttpOnly cookie | Secure, easy to invalidate |
 | Unit system | Store in kg, display user-preference later | Single canonical unit simplifies math |
 | Chart library | Chart.js | Lightweight, well-documented, good enough for MVP |
 | SvelteKit adapter | `adapter-node` | Required for Docker/self-host (not static/serverless) |
