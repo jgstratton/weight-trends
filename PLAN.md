@@ -20,16 +20,16 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 1 - Database Setup (Drizzle + PostgreSQL)
 
-- [ ] Install dependencies: `drizzle-orm`, `postgres` (postgres.js driver), `drizzle-kit`
-- [ ] Create `drizzle.config.ts` at the app root pointing at the Postgres connection string
-- [ ] Define schema in `src/lib/db/schema.ts`:
+- [x] Install dependencies: `drizzle-orm`, `postgres` (postgres.js driver), `drizzle-kit`
+- [x] Create `drizzle.config.ts` at the app root pointing at the Postgres connection string
+- [x] Define schema in `src/lib/db/schema.ts`:
   - **users** - `id` (uuid, pk), `email` (text, unique), `created_at`
   - **sessions** - `id` (uuid, pk), `user_id` (fk -> users), `expires_at`, `created_at`
   - **otp_tokens** - `id` (uuid, pk), `user_id` (fk -> users), `code` (text), `expires_at`, `used_at`
   - **weights** - `id` (uuid, pk), `user_id` (fk -> users), `value` (numeric), `date` (date), `notes` (text, nullable), `created_at`
-- [ ] Create a Drizzle client instance (`src/lib/db/index.ts`)
-- [ ] Generate initial migration: `drizzle-kit generate`
-- [ ] Apply migrations on startup (or via a separate migrate script run before the app starts)
+- [x] Create a Drizzle client instance (`src/lib/db/index.ts`)
+- [x] Generate initial migration: `drizzle-kit generate`
+- [x] Apply migrations on startup (or via a separate migrate script run before the app starts)
 
 ## Phase 2 - SvelteKit <-> Database Integration
 
