@@ -1,23 +1,22 @@
-import sgMail from '@sendgrid/mail';
-import { env } from '$env/dynamic/private';
+import { Resend } from 'resend';
+import { RESEND_API_KEY, RESEND_FROM_EMAIL } from '$env/static/private';
 
-export function sendOtpEmail(to: string, code: string): Promise<void> {
-	const apiKey = env.SENDGRID_API_KEY;
-	const from = env.SENDGRID_FROM_EMAIL;
-
-	if (!apiKey || !from) {
-		throw new Error('SENDGRID_API_KEY and SENDGRID_FROM_EMAIL must be set in the environment.');
+export async function sendOtpEmail(to: string, code: string): Promise<void> {
+	if (!RESEND_API_KEY || !RESEND_FROM_EMAIL) {
+		throw new Error('RESEND_API_KEY and RESEND_FROM_EMAIL must be set in the environment.');
 	}
 
-	sgMail.setApiKey(apiKey);
+	const resend = new Resend(RESEND_API_KEY);
 
-	return sgMail
-		.send({
-			to,
-			from,
-			subject: 'Your Weight Trends login code',
-			text: `Your one-time login code is: ${code}\n\nThis code expires in 10 minutes.`,
-			html: `<p>Your one-time login code is:</p><h2>${code}</h2><p>This code expires in 10 minutes.</p>`
-		})
-		.then(() => undefined);
+	const { error } = await resend.emails.send({
+		from: RESEND_FROM_EMAIL,
+		to,
+		subject: 'Your Weight Trends login code',
+		text: `Your one-time login code is: ${code}\n\nThis code expires in 10 minutes.`,
+		html: `<p>Your one-time login code is:</p><h2>${code}</h2><p>This code expires in 10 minutes.</p>`
+	});
+
+	if (error) {
+		throw new Error(`Resend error: ${error.message}`);
+	}
 }

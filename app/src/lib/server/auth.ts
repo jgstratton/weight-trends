@@ -1,7 +1,7 @@
 import { createHash, randomInt, timingSafeEqual } from 'node:crypto';
 import { db } from '$lib/db/index.js';
 import { users, otpTokens, sessions } from '$lib/db/schema.js';
-import { eq, and, gt, isNull } from 'drizzle-orm';
+import { eq, and, gt, isNull, desc } from 'drizzle-orm';
 
 const OTP_EXPIRY_MINUTES = 10;
 const SESSION_EXPIRY_DAYS = 30;
@@ -40,6 +40,12 @@ export async function createOtpForEmail(email: string): Promise<string> {
 	const hash = hashCode(code);
 	const expiresAt = new Date(Date.now() + OTP_EXPIRY_MINUTES * 60 * 1000);
 
+	// Invalidate any previous unused tokens for this user
+	await db
+		.update(otpTokens)
+		.set({ usedAt: new Date() })
+		.where(and(eq(otpTokens.userId, user.id), isNull(otpTokens.usedAt)));
+
 	await db.insert(otpTokens).values({ userId: user.id, code: hash, expiresAt });
 
 	return code;
@@ -64,7 +70,7 @@ export async function verifyOtp(
 				gt(otpTokens.expiresAt, new Date())
 			)
 		)
-		.orderBy(otpTokens.expiresAt)
+		.orderBy(desc(otpTokens.expiresAt))
 		.limit(1);
 
 	if (!token || !codeMatches(candidate, token.code)) return null;
