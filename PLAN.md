@@ -24,30 +24,30 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 - [x] Create collections via PocketBase migration or admin UI:
   - **users** (built-in auth collection) — enable email/magic-link auth
   - **weights** — fields: `user` (relation → users), `value` (number, kg/lbs), `date` (date), `notes` (text, optional)
-- [ ] Enable magic-link (OTP) authentication on the users collection
-- [ ] Set collection rules so users can only CRUD their own weight records:
+- [x] Enable magic-link (OTP) authentication on the users collection
+- [x] Set collection rules so users can only CRUD their own weight records:
   - List/View: `@request.auth.id = user`
   - Create: `@request.auth.id = @request.data.user`
   - Update/Delete: `@request.auth.id = user`
 
 ## Phase 2 — SvelteKit ↔ PocketBase Integration
 
-- [ ] Install PocketBase JS SDK (`pocketbase`)
-- [ ] Create a shared PocketBase client instance (`src/lib/pocketbase.ts`)
-- [ ] Add an auth store that syncs PocketBase auth state with a Svelte store
-- [ ] Create a layout load function that restores auth from cookie on SSR
+- [x] Install PocketBase JS SDK (`pocketbase`)
+- [x] Create a shared PocketBase client instance (`src/lib/pocketbase.ts`)
+- [x] Add an auth store that syncs PocketBase auth state with a Svelte store
+- [x] Create a layout load function that restores auth from cookie on SSR
 
 ## Phase 3 — Authentication (Magic Link)
 
-- [ ] Build `/login` page:
+- [x] Build `/login` page:
   - Email input + "Send Magic Link" button
   - Calls `pb.collection('users').requestOTP(email)`
-- [ ] Build OTP verification step on the same page:
+- [x] Build OTP verification step on the same page:
   - Code input that appears after email is sent
   - Calls `pb.collection('users').authWithOTP(otpId, code)`
-- [ ] On successful auth, redirect to `/` (dashboard)
-- [ ] Add logout button in nav/layout
-- [ ] Protect all routes except `/login` with an auth guard (redirect if not logged in)
+- [x] On successful auth, redirect to `/` (dashboard)
+- [x] Add logout button in nav/layout
+- [x] Protect all routes except `/login` with an auth guard (redirect if not logged in)
 
 ## Phase 4 — Weight Logging
 
