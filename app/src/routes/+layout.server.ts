@@ -13,12 +13,6 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
   }
 
   return {
-    user: locals.user
-      ? {
-          id: locals.user.id,
-          email: String(locals.user.email ?? ''),
-          name: String(locals.user.name ?? '')
-        }
-      : null
+    user: locals.user ? { id: locals.user.id, email: locals.user.email } : null
   };
 };

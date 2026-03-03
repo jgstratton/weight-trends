@@ -1,35 +1,30 @@
-import PocketBase from 'pocketbase';
-import { env } from '$env/dynamic/private';
 import type { Handle } from '@sveltejs/kit';
-
-const fallbackUrl = 'http://localhost:8090';
+import { db } from '$lib/db/index.js';
+import { sessions, users } from '$lib/db/schema.js';
+import { eq, and, gt } from 'drizzle-orm';
 
 export const handle: Handle = async ({ event, resolve }) => {
-  const serverPocketBaseUrl = env.POCKETBASE_URL ?? env.PUBLIC_POCKETBASE_URL ?? fallbackUrl;
+  const sessionId = event.cookies.get('session_id') ?? null;
+  event.locals.user = null;
+  event.locals.sessionId = null;
 
-  event.locals.pb = new PocketBase(serverPocketBaseUrl);
-  event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
+  if (sessionId) {
+    const [row] = await db
+      .select({
+        userId: sessions.userId,
+        expiresAt: sessions.expiresAt,
+        email: users.email
+      })
+      .from(sessions)
+      .innerJoin(users, eq(users.id, sessions.userId))
+      .where(and(eq(sessions.id, sessionId), gt(sessions.expiresAt, new Date())))
+      .limit(1);
 
-  if (event.locals.pb.authStore.isValid) {
-    try {
-      await event.locals.pb.collection('users').authRefresh();
-    } catch {
-      event.locals.pb.authStore.clear();
+    if (row) {
+      event.locals.user = { id: row.userId, email: row.email };
+      event.locals.sessionId = sessionId;
     }
   }
 
-  event.locals.user = event.locals.pb.authStore.record;
-
-  const response = await resolve(event);
-
-  response.headers.append(
-    'set-cookie',
-    event.locals.pb.authStore.exportToCookie({
-      sameSite: 'Lax',
-      path: '/',
-      httpOnly: false
-    })
-  );
-
-  return response;
+  return resolve(event);
 };

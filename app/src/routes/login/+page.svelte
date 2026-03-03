@@ -1,72 +1,42 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { pb, persistAuthToCookie } from '$lib/pocketbase';
+	import { enhance } from '$app/forms';
 
-	let email = '';
-	let code = '';
-	let otpId = '';
-	let infoMessage = '';
-	let errorMessage = '';
-	let sendingOtp = false;
-	let verifyingOtp = false;
+	let { form } = $props();
 
-	async function sendMagicLink() {
-		errorMessage = '';
-		infoMessage = '';
-		sendingOtp = true;
-
-		try {
-			const response = await pb.collection('users').requestOTP(email);
-			otpId = response.otpId;
-			infoMessage = 'Code sent. Check your email for the one-time code.';
-		} catch (error) {
-			errorMessage = error instanceof Error ? error.message : 'Failed to send one-time code.';
-		} finally {
-			sendingOtp = false;
-		}
-	}
-
-	async function verifyCode() {
-		errorMessage = '';
-		infoMessage = '';
-		verifyingOtp = true;
-
-		try {
-			await pb.collection('users').authWithOTP(otpId, code);
-			persistAuthToCookie();
-			await goto('/');
-		} catch (error) {
-			errorMessage = error instanceof Error ? error.message : 'Failed to verify one-time code.';
-		} finally {
-			verifyingOtp = false;
-		}
-	}
+	let showCodeStep = $state(false);
+	let email = $state('');
 </script>
 
 <h1>Login</h1>
 
-<form on:submit|preventDefault={sendMagicLink}>
-	<label for="email">Email</label>
-	<input id="email" type="email" bind:value={email} required />
-	<button type="submit" disabled={sendingOtp || !email}>
-		{sendingOtp ? 'Sending...' : 'Send Magic Link'}
-	</button>
-</form>
-
-{#if otpId}
-	<form on:submit|preventDefault={verifyCode}>
+{#if !showCodeStep}
+	<form
+		method="POST"
+		action="?/requestOtp"
+		use:enhance={() => {
+			return async ({ result, update }) => {
+				if (result.type === 'failure') {
+					await update();
+				} else {
+					showCodeStep = true;
+				}
+			};
+		}}
+	>
+		<label for="email">Email</label>
+		<input id="email" name="email" type="email" bind:value={email} required />
+		<button type="submit">Send One-Time Code</button>
+	</form>
+{:else}
+	<form method="POST" action="?/verifyOtp" use:enhance>
+		<input type="hidden" name="email" value={email} />
 		<label for="code">One-time code</label>
-		<input id="code" type="text" bind:value={code} required />
-		<button type="submit" disabled={verifyingOtp || !code}>
-			{verifyingOtp ? 'Verifying...' : 'Verify Code'}
-		</button>
+		<input id="code" name="code" type="text" inputmode="numeric" required autocomplete="one-time-code" />
+		<button type="submit">Verify Code</button>
+		<button type="button" onclick={() => (showCodeStep = false)}>Back</button>
 	</form>
 {/if}
 
-{#if infoMessage}
-	<p>{infoMessage}</p>
-{/if}
-
-{#if errorMessage}
-	<p>{errorMessage}</p>
+{#if form?.message}
+	<p>{form.message}</p>
 {/if}
