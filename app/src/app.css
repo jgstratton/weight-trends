@@ -388,6 +388,93 @@ tr:hover td {
 }
 
 /* ==============================
+   Chart header (title + date filter)
+   ============================== */
+.chart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.chart-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.chart-type-select {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.chart-type-select:focus {
+  outline: none;
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67,97,238,.15);
+}
+
+.date-range-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.date-range-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.date-range-label input[type="date"] {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  transition: border-color 0.15s;
+  width: 140px;
+}
+
+.date-range-label input[type="date"]:focus {
+  outline: none;
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67,97,238,.15);
+}
+
+.btn-clear-dates {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  background: #e9ecef;
+  color: #555;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  align-self: flex-end;
+}
+
+.btn-clear-dates:hover {
+  background: #dee2e6;
+}
+
+/* ==============================
    History header (search + title)
    ============================== */
 .history-header {
