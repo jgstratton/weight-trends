@@ -51,13 +51,13 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 4 - Weight Logging
 
-- [ ] Build `/log` page (or inline form on dashboard):
+- [x] Build `/log` page (or inline form on dashboard):
   - Inputs: weight value (number), date (defaults to today), optional notes
   - POST action inserts a row into the `weights` table for `locals.user.id`
-- [ ] Build weight history list on the dashboard:
+- [x] Build weight history list on the dashboard:
   - Server load function queries `weights` for the current user, sorted by date descending
   - Display as a simple table/list with date, value, notes
-- [ ] Add ability to edit and delete entries (form actions with `?/update` and `?/delete`)
+- [x] Add ability to edit and delete entries (form actions with `?/update` and `?/delete`)
 
 ## Phase 5 - Chart / Trend Visualization
 
