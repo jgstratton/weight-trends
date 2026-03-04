@@ -15,7 +15,8 @@
 		<div class="nav-inner">
 			<div class="nav-left">
 				<span class="nav-brand">Weight Trends</span>
-				<a href="/" class="nav-link" class:nav-link-active={$page.url.pathname === '/'}>Dashboard</a>
+				<a href="/" class="nav-link" class:nav-link-active={$page.url.pathname === '/'}>Chart</a>
+				<a href="/log" class="nav-link" class:nav-link-active={$page.url.pathname === '/log'}>Log</a>
 				<a href="/import" class="nav-link" class:nav-link-active={$page.url.pathname === '/import'}>Import CSV</a>
 			</div>
 			<div class="nav-user">
