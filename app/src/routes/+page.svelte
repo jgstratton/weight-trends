@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import WeightChart from '$lib/components/WeightChart.svelte';
 
 	let { data, form } = $props();
 
@@ -11,6 +12,11 @@
 </script>
 
 <h1>Weight Trends</h1>
+
+<!-- Chart -->
+<section>
+	<WeightChart entries={data.weights} />
+</section>
 
 <!-- Add entry form -->
 <section>

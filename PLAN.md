@@ -61,14 +61,14 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 5 - Chart / Trend Visualization
 
-- [ ] Install Chart.js and `svelte-chartjs` (or use Chart.js directly via canvas)
-- [ ] Build a line chart component (`src/lib/components/WeightChart.svelte`):
+- [x] Install Chart.js and `svelte-chartjs` (or use Chart.js directly via canvas)
+- [x] Build a line chart component (`src/lib/components/WeightChart.svelte`):
   - X-axis: date
   - Y-axis: weight
   - Raw data points as scatter/line
-- [ ] Add a simple moving average trend line (e.g., 7-day SMA)
-- [ ] Place chart prominently on the dashboard above/beside the log list
-- [ ] Make chart responsive and handle empty/sparse data gracefully
+- [x] Add a simple moving average trend line (e.g., 7-day SMA)
+- [x] Place chart prominently on the dashboard above/beside the log list
+- [x] Make chart responsive and handle empty/sparse data gracefully
 
 ## Phase 6 - Polish & Deploy
 
