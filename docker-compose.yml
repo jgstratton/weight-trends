@@ -27,6 +27,9 @@ services:
       HOST: 0.0.0.0
       PORT: 3000
       DATABASE_URL: postgres://weighttrends:weighttrends@postgres:5432/weighttrends
+      # Email delivery via Resend (https://resend.com)
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL}
     ports:
       - "3000:3000"
     restart: unless-stopped

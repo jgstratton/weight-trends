@@ -72,19 +72,19 @@ A self-hosted web app for tracking body weight and visualizing trends over time.
 
 ## Phase 6 - Polish & Deploy
 
-- [ ] Basic responsive layout (mobile-friendly - most logging happens on phones)
-- [ ] Loading states and error handling on all data operations
-- [ ] Environment variable config:
+- [x] Basic responsive layout (mobile-friendly - most logging happens on phones)
+- [x] Loading states and error handling on all data operations
+- [x] Environment variable config:
   - `DATABASE_URL` - Postgres connection string
-  - `SESSION_SECRET` - secret for signing session cookies
-  - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` - email config
-- [ ] Final `docker-compose.yml` tuning:
+  - `RESEND_API_KEY` - Resend API key for email delivery
+  - `RESEND_FROM_EMAIL` - verified sender address
+- [x] Final `docker-compose.yml` tuning:
   - Health checks (Postgres `pg_isready`, app waits for DB)
   - Restart policies
   - Volume mount for Postgres data persistence
   - Run `drizzle-kit migrate` as part of the app entrypoint or a one-shot init container
-- [ ] Add a `README.md` with setup/run instructions
-- [ ] Tag as `v0.1.0` - MVP complete
+- [x] Add a `README.md` with setup/run instructions
+- [x] Tag as `v0.1.0` - MVP complete
 
 ---
 
