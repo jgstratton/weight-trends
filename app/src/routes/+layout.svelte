@@ -1,5 +1,6 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import { page } from '$app/stores';
 	import '../app.css';
 
 	let { children, data } = $props();
@@ -12,7 +13,11 @@
 {#if data.user}
 	<nav>
 		<div class="nav-inner">
-			<span class="nav-brand">Weight Trends</span>
+			<div class="nav-left">
+				<span class="nav-brand">Weight Trends</span>
+				<a href="/" class="nav-link" class:nav-link-active={$page.url.pathname === '/'}>Dashboard</a>
+				<a href="/import" class="nav-link" class:nav-link-active={$page.url.pathname === '/import'}>Import CSV</a>
+			</div>
 			<div class="nav-user">
 				<span class="nav-email">{data.user.email}</span>
 				<form method="POST" action="/logout">

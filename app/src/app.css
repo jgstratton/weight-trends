@@ -70,6 +70,33 @@ nav {
   color: #fff;
 }
 
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.2rem 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.nav-link:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-link-active {
+  color: #fff;
+  border-bottom-color: #4361ee;
+}
+
 .nav-user {
   display: flex;
   align-items: center;
