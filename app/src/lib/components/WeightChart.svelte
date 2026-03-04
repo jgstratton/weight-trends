@@ -50,14 +50,15 @@
 
 		if (sorted.length === 0) return;
 
-		const sma = computeSma(sorted, 7);
+		const sma7 = computeSma(sorted, 7);
+		const sma30 = computeSma(sorted, 30);
 
 		const config: ChartConfiguration = {
 			type: 'line',
 			data: {
 				datasets: [
 					{
-						label: 'Weight (kg)',
+						label: 'Weight (lbs)',
 						data: sorted,
 						borderColor: 'rgba(99, 102, 241, 0.8)',
 						backgroundColor: 'rgba(99, 102, 241, 0.1)',
@@ -66,15 +67,27 @@
 						borderWidth: 2,
 						tension: 0,
 						fill: false,
-						order: 2
+						order: 3
 					},
 					{
 						label: '7-day average',
-						data: sma,
+						data: sma7,
 						borderColor: 'rgba(239, 68, 68, 0.9)',
 						backgroundColor: 'transparent',
 						pointRadius: 0,
 						borderWidth: 2.5,
+						tension: 0.3,
+						fill: false,
+						order: 2
+					},
+					{
+						label: '30-day trend',
+						data: sma30,
+						borderColor: 'rgba(234, 179, 8, 0.9)',
+						backgroundColor: 'transparent',
+						pointRadius: 0,
+						borderWidth: 2.5,
+						borderDash: [6, 3],
 						tension: 0.3,
 						fill: false,
 						order: 1
@@ -92,7 +105,7 @@
 						grid: { display: false }
 					},
 					y: {
-						title: { display: true, text: 'kg' },
+						title: { display: true, text: 'lbs' },
 						grace: '5%'
 					}
 				},
@@ -100,7 +113,7 @@
 					legend: { position: 'top' },
 					tooltip: {
 						callbacks: {
-							label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} kg`
+							label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} lbs`
 						}
 					}
 				}

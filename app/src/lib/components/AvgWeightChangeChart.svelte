@@ -77,7 +77,7 @@
 				labels,
 				datasets: [
 					{
-						label: 'Avg monthly change (kg)',
+						label: 'Avg monthly change (lbs)',
 						data: changes,
 						backgroundColor: colors,
 						borderColor: borderColors,
@@ -95,7 +95,7 @@
 						grid: { display: false }
 					},
 					y: {
-						title: { display: true, text: 'kg change' },
+						title: { display: true, text: 'lbs change' },
 						grid: { color: 'rgba(0,0,0,0.06)' }
 					}
 				},
@@ -106,7 +106,7 @@
 							label: (ctx) => {
 								const v = ctx.parsed.y ?? 0;
 								const sign = v > 0 ? '+' : '';
-								return `Change: ${sign}${v} kg`;
+								return `Change: ${sign}${v} lbs`;
 							}
 						}
 					}

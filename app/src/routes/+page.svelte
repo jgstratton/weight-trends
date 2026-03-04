@@ -2,12 +2,18 @@
 	import { browser } from '$app/environment';
 	import WeightChart from '$lib/components/WeightChart.svelte';
 	import AvgWeightChangeChart from '$lib/components/AvgWeightChangeChart.svelte';
+	import WeeklyRangeChart from '$lib/components/WeeklyRangeChart.svelte';
+	import CumulativeProgressChart from '$lib/components/CumulativeProgressChart.svelte';
+	import VelocityChart from '$lib/components/VelocityChart.svelte';
+	import DayOfWeekChart from '$lib/components/DayOfWeekChart.svelte';
+	import HistogramChart from '$lib/components/HistogramChart.svelte';
+	import YearOverYearChart from '$lib/components/YearOverYearChart.svelte';
 
 	let { data } = $props();
 
 	const STORAGE_KEY = 'chart-prefs';
 
-	type ChartType = 'history' | 'avg-change';
+	type ChartType = 'history' | 'avg-change' | 'weekly-range' | 'cumulative' | 'velocity' | 'day-of-week' | 'histogram' | 'year-over-year';
 
 	function loadPrefs(): { start: string; end: string; chartType: ChartType } {
 		if (!browser) return { start: '', end: '', chartType: 'history' };
@@ -50,7 +56,13 @@
 
 	const chartOptions: { value: ChartType; label: string }[] = [
 		{ value: 'history', label: 'Weight History' },
-		{ value: 'avg-change', label: 'Avg Weight Change' }
+		{ value: 'avg-change', label: 'Avg Weight Change' },
+		{ value: 'weekly-range', label: 'Weekly Range' },
+		{ value: 'cumulative', label: 'Cumulative Progress' },
+		{ value: 'velocity', label: 'Rate of Change' },
+		{ value: 'day-of-week', label: 'Day of Week' },
+		{ value: 'histogram', label: 'Distribution' },
+		{ value: 'year-over-year', label: 'Year over Year' }
 	];
 </script>
 
@@ -96,6 +108,18 @@
 			<WeightChart entries={filteredEntries} />
 		{:else if chartType === 'avg-change'}
 			<AvgWeightChangeChart entries={filteredEntries} />
+		{:else if chartType === 'weekly-range'}
+			<WeeklyRangeChart entries={filteredEntries} />
+		{:else if chartType === 'cumulative'}
+			<CumulativeProgressChart entries={filteredEntries} />
+		{:else if chartType === 'velocity'}
+			<VelocityChart entries={filteredEntries} />
+		{:else if chartType === 'day-of-week'}
+			<DayOfWeekChart entries={filteredEntries} />
+		{:else if chartType === 'histogram'}
+			<HistogramChart entries={filteredEntries} />
+		{:else if chartType === 'year-over-year'}
+			<YearOverYearChart entries={data.chartWeights} />
 		{/if}
 	</div>
 </main>

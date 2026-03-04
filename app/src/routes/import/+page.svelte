@@ -17,7 +17,7 @@
 	<div class="card">
 		<h1>Import from CSV</h1>
 		<p style="margin-top:0; color:#666; font-size:0.9rem;">
-			Upload a CSV file with two columns: <strong>date</strong> and <strong>weight</strong> (kg).
+			Upload a CSV file with two columns: <strong>date</strong> and <strong>weight</strong> (lbs).
 			Accepted date formats: <code>YYYY-MM-DD</code> or <code>MM/DD/YYYY</code>. A header row is
 			optional.
 		</p>
