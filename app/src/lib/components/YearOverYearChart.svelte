@@ -87,12 +87,13 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				interaction: { mode: 'index', intersect: false },
 				scales: {
 					x: { grid: { display: false } },
 					y: {
-						title: { display: true, text: 'avg lbs' },
+						title: { display: false },
 						grace: '5%'
 					}
 				},
@@ -103,7 +104,7 @@
 							label: (ctx) => {
 								const v = ctx.parsed.y;
 								if (v === null) return '';
-								return `${ctx.dataset.label}: ${v} lbs`;
+								return `${ctx.dataset.label}: ${v}`;
 							}
 						}
 					}
@@ -128,5 +129,18 @@
 {/if}
 
 <style>
-	.chart-wrapper { position: relative; width: 100%; max-height: 400px; }
+	.chart-wrapper {
+		position: relative;
+		width: 100%;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
+	}
 </style>

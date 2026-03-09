@@ -72,14 +72,15 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				scales: {
 					x: {
-						title: { display: true, text: 'Weight range (lbs)' },
+						title: { display: false },
 						grid: { display: false }
 					},
 					y: {
-						title: { display: true, text: 'Number of entries' },
+						title: { display: false },
 						ticks: { stepSize: 1 }
 					}
 				},
@@ -114,5 +115,18 @@
 {/if}
 
 <style>
-	.chart-wrapper { position: relative; width: 100%; max-height: 400px; }
+	.chart-wrapper {
+		position: relative;
+		width: 100%;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
+	}
 </style>

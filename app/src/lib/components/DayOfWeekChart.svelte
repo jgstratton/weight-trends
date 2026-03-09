@@ -64,7 +64,7 @@
 				labels: DAY_LABELS,
 				datasets: [
 					{
-						label: 'Deviation from overall avg (lbs)',
+						label: 'Deviation from overall avg',
 						data: deviations,
 						backgroundColor: barColors,
 						borderColor: barColors.map((c) => c.replace('0.7', '1').replace('0.4', '0.6')),
@@ -75,11 +75,12 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				scales: {
 					x: { grid: { display: false } },
 					y: {
-						title: { display: true, text: 'lbs vs. overall avg' },
+						title: { display: false },
 						grace: '10%'
 					}
 				},
@@ -96,8 +97,8 @@
 								if (avg === null) return 'No data';
 								const sign = (dev ?? 0) >= 0 ? '+' : '';
 								return [
-								`Avg weight: ${avg} lbs`,
-								`vs. overall: ${sign}${dev} lbs`,
+							`Avg weight: ${avg}`,
+							`vs. overall: ${sign}${dev}`,
 									`Entries: ${n}`
 								];
 							}
@@ -128,5 +129,18 @@
 {/if}
 
 <style>
-	.chart-wrapper { position: relative; width: 100%; max-height: 400px; }
+	.chart-wrapper {
+		position: relative;
+		width: 100%;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
+	}
 </style>

@@ -77,7 +77,7 @@
 				labels,
 				datasets: [
 					{
-						label: 'Avg monthly change (lbs)',
+						label: 'Avg monthly change',
 						data: changes,
 						backgroundColor: colors,
 						borderColor: borderColors,
@@ -88,14 +88,15 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				interaction: { mode: 'index', intersect: false },
 				scales: {
 					x: {
 						grid: { display: false }
 					},
 					y: {
-						title: { display: true, text: 'lbs change' },
+						title: { display: false },
 						grid: { color: 'rgba(0,0,0,0.06)' }
 					}
 				},
@@ -106,7 +107,7 @@
 							label: (ctx) => {
 								const v = ctx.parsed.y ?? 0;
 								const sign = v > 0 ? '+' : '';
-								return `Change: ${sign}${v} lbs`;
+								return `Change: ${sign}${v}`;
 							}
 						}
 					}
@@ -138,6 +139,15 @@
 	.chart-wrapper {
 		position: relative;
 		width: 100%;
-		max-height: 400px;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
 	}
 </style>

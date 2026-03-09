@@ -58,7 +58,7 @@
 			data: {
 				datasets: [
 					{
-						label: 'Weight (lbs)',
+						label: 'Weight',
 						data: sorted,
 						borderColor: 'rgba(99, 102, 241, 0.8)',
 						backgroundColor: 'rgba(99, 102, 241, 0.1)',
@@ -96,7 +96,8 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				interaction: { mode: 'index', intersect: false },
 				scales: {
 					x: {
@@ -105,7 +106,7 @@
 						grid: { display: false }
 					},
 					y: {
-						title: { display: true, text: 'lbs' },
+						title: { display: false },
 						grace: '5%'
 					}
 				},
@@ -113,7 +114,7 @@
 					legend: { position: 'top' },
 					tooltip: {
 						callbacks: {
-							label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} lbs`
+							label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y}`
 						}
 					}
 				}
@@ -145,6 +146,15 @@
 	.chart-wrapper {
 		position: relative;
 		width: 100%;
-		max-height: 400px;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
 	}
 </style>

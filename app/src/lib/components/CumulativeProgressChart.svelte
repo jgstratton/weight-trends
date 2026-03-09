@@ -52,7 +52,7 @@
 			data: {
 				datasets: [
 					{
-						label: 'Cumulative change (lbs)',
+						label: 'Cumulative change',
 						data: cumulative,
 						borderColor: 'rgba(99, 102, 241, 0.85)',
 						backgroundColor: (ctx: ScriptableContext<'line'>) => {
@@ -75,7 +75,8 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				interaction: { mode: 'index', intersect: false },
 				scales: {
 					x: {
@@ -84,7 +85,7 @@
 						grid: { display: false }
 					},
 					y: {
-						title: { display: true, text: 'lbs from start' },
+						title: { display: false },
 						grace: '5%'
 					}
 				},
@@ -95,7 +96,7 @@
 							label: (ctx) => {
 							const v = ctx.parsed.y ?? 0;
 								const sign = v > 0 ? '+' : '';
-								return `Change: ${sign}${v} lbs from start`;
+								return `Change: ${sign}${v} from start`;
 							}
 						}
 					}
@@ -120,5 +121,18 @@
 {/if}
 
 <style>
-	.chart-wrapper { position: relative; width: 100%; max-height: 400px; }
+	.chart-wrapper {
+		position: relative;
+		width: 100%;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
+	}
 </style>

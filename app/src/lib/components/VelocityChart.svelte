@@ -87,7 +87,7 @@
 				labels,
 				datasets: [
 					{
-						label: 'Weekly change (lbs)',
+						label: 'Weekly change',
 						data: velocities,
 						borderColor: 'rgba(99, 102, 241, 0.7)',
 						backgroundColor: 'rgba(99, 102, 241, 0.08)',
@@ -116,12 +116,13 @@
 			},
 			options: {
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
+				layout: { padding: { left: 0, right: 0 } },
 				interaction: { mode: 'index', intersect: false },
 				scales: {
 					x: { grid: { display: false } },
 					y: {
-						title: { display: true, text: 'lbs / week' },
+						title: { display: false },
 						grace: '10%'
 					}
 				},
@@ -137,7 +138,7 @@
 							label: (ctx) => {
 								const v = ctx.parsed.y ?? 0;
 								const sign = v > 0 ? '+' : '';
-								return `Change: ${sign}${v} lbs`;
+								return `Change: ${sign}${v}`;
 							}
 						}
 					}
@@ -162,5 +163,18 @@
 {/if}
 
 <style>
-	.chart-wrapper { position: relative; width: 100%; max-height: 400px; }
+	.chart-wrapper {
+		position: relative;
+		width: 100%;
+		height: 400px;
+	}
+
+	@media (max-width: 480px) {
+		.chart-wrapper {
+			height: 300px;
+			margin-left: -0.75rem;
+			margin-right: -0.75rem;
+			width: calc(100% + 1.5rem);
+		}
+	}
 </style>
