@@ -12,6 +12,7 @@
 	} from 'chart.js';
 
 	Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip, Legend);
+	import '$lib/chartDefaults';
 
 	interface WeightEntry {
 		date: string;
@@ -122,7 +123,7 @@
 	<div class="chart-wrapper">
 		<canvas bind:this={canvas}></canvas>
 	</div>
-	<p style="font-size:0.82rem; color:#6c757d; margin-top:0.6rem; text-align:center;">
+	<p style="font-size:0.82rem; color:#94a3b8; margin-top:0.6rem; text-align:center;">
 		Bars show how each day's average weight compares to your overall average.
 		Green = typically lighter, red = typically heavier.
 	</p>

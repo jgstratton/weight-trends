@@ -16,14 +16,14 @@
 <main>
 	<div class="card">
 		<h1>Import from CSV</h1>
-		<p style="margin-top:0; color:#666; font-size:0.9rem;">
+		<p style="margin-top:0; color:#94a3b8; font-size:0.9rem;">
 			Upload a CSV file with two columns: <strong>date</strong> and <strong>weight</strong> (lbs).
 			Accepted date formats: <code>YYYY-MM-DD</code> or <code>MM/DD/YYYY</code>. A header row is
 			optional.
 		</p>
-		<p style="color:#666; font-size:0.9rem;">Example:</p>
+		<p style="color:#94a3b8; font-size:0.9rem;">Example:</p>
 		<pre
-			style="background:#f5f7fa; border:1px solid #e0e0e0; border-radius:6px; padding:0.75rem 1rem; font-size:0.85rem; margin-top:0; overflow-x:auto;">date,weight
+			style="background:#1e293b; border:1px solid #334155; border-radius:6px; padding:0.75rem 1rem; font-size:0.85rem; margin-top:0; overflow-x:auto;">date,weight
 2026-01-01,85.4
 2026-01-02,85.1
 2026-01-05,84.8</pre>

@@ -12,6 +12,7 @@
 	} from 'chart.js';
 
 	Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip, Legend);
+	import '$lib/chartDefaults';
 
 	interface WeightEntry {
 		date: string; // YYYY-MM-DD
@@ -97,7 +98,7 @@
 					},
 					y: {
 						title: { display: false },
-						grid: { color: 'rgba(0,0,0,0.06)' }
+						grid: { color: 'rgba(148,163,184,0.1)' }
 					}
 				},
 				plugins: {

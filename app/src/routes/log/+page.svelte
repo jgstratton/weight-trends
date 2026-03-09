@@ -81,7 +81,7 @@
 		>
 			<div class="form-grid">
 				<label>
-					Weight (lbs)
+					Weight
 					<input name="value" type="number" step="0.1" min="1" max="700" required />
 				</label>
 				<label>
@@ -126,7 +126,7 @@
 					<thead>
 						<tr>
 							<th><a href={sortHref('date')} class="sort-link">Date <span class="sort-icon" class:sort-active={data.sortBy === 'date'}>{sortIcon('date')}</span></a></th>
-							<th><a href={sortHref('value')} class="sort-link">Weight (lbs) <span class="sort-icon" class:sort-active={data.sortBy === 'value'}>{sortIcon('value')}</span></a></th>
+							<th><a href={sortHref('value')} class="sort-link">Weight <span class="sort-icon" class:sort-active={data.sortBy === 'value'}>{sortIcon('value')}</span></a></th>
 							<th><a href={sortHref('notes')} class="sort-link">Notes <span class="sort-icon" class:sort-active={data.sortBy === 'notes'}>{sortIcon('notes')}</span></a></th>
 							<th></th>
 						</tr>

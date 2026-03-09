@@ -12,6 +12,7 @@
 	} from 'chart.js';
 
 	Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip, Legend);
+	import '$lib/chartDefaults';
 
 	interface WeightEntry {
 		date: string;

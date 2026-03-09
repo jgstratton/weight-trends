@@ -16,6 +16,7 @@
 	import 'chartjs-adapter-date-fns';
 
 	Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend, Filler);
+	import '$lib/chartDefaults';
 
 	interface WeightEntry {
 		date: string;
