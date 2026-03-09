@@ -30,7 +30,7 @@ You also need a [Resend](https://resend.com) account to send the OTP emails (fre
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/your-username/weight-trends-2.git
+git clone https://github.com/your-username/weight-trends.git
 cd weight-trends-2
 ```
 
