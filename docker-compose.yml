@@ -2,15 +2,15 @@ services:
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_USER: weighttrends
-      POSTGRES_PASSWORD: weighttrends
-      POSTGRES_DB: weighttrends
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - ./postgres-data::/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U weighttrends"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -21,17 +21,16 @@ services:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     environment:
       HOST: 0.0.0.0
       PORT: 3000
-      DATABASE_URL: postgres://weighttrends:weighttrends@postgres:5432/weighttrends
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       # Email delivery via Resend (https://resend.com)
       RESEND_API_KEY: ${RESEND_API_KEY}
       RESEND_FROM_EMAIL: ${RESEND_FROM_EMAIL}
     ports:
-      - "3000:3000"
+      - "${APP_PORT:-3000}:3000"
     restart: unless-stopped
 
 volumes:
