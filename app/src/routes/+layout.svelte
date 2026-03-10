@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/stores';
 	import '../app.css';
 
@@ -12,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" type="image/png" href="/favicon.png" />
 </svelte:head>
 
 {#if data.user}
