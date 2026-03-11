@@ -110,7 +110,7 @@
 						<tr>
 							<th>Horizon</th>
 							<th>Date</th>
-							<th>Projected Weight</th>
+							<th><span class="th-long">Projected Weight</span><span class="th-short">Projected</span></th>
 							<th>Change</th>
 						</tr>
 					</thead>
@@ -337,6 +337,14 @@
 	}
 	.td-change {
 		font-weight: 600;
+	}
+
+	.th-short { display: none; }
+	.th-long  { display: inline; }
+
+	@media (max-width: 480px) {
+		.th-short { display: inline; }
+		.th-long  { display: none; }
 	}
 
 

@@ -71,6 +71,19 @@ nav {
   color: #fff;
 }
 
+.nav-brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-logo {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  display: block;
+}
+
 .nav-left {
   display: flex;
   align-items: center;

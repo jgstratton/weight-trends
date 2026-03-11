@@ -18,7 +18,7 @@
 	<nav>
 		<div class="nav-inner">
 			<div class="nav-left">
-				<span class="nav-brand">Weight Trends</span>
+				<a href="/" class="nav-brand-link"><img src="/favicon.png" alt="Weight Trends" class="nav-logo" /></a>
 				<a href="/trends" class="nav-link" class:nav-link-active={$page.url.pathname === '/trends'}>My Trends</a>
 				<a href="/" class="nav-link" class:nav-link-active={$page.url.pathname === '/'}>Chart</a>
 				<a href="/log" class="nav-link" class:nav-link-active={$page.url.pathname === '/log'}>Log</a>
