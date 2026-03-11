@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TrendLineChart from '$lib/components/TrendLineChart.svelte';
 	let { data } = $props();
 
 	/**
@@ -75,7 +76,7 @@
 				<div class="trend-card-label">{t.label} Trend</div>
 				{#if t.trend}
 					<div class="trend-card-rate {rateClass(t.trend.slopePerWeek)}">
-						{signedFmt(t.trend.slopePerWeek)} lbs/wk
+						{signedFmt(t.trend.slopePerWeek, 2)} lbs/wk
 					</div>
 					<div class="trend-card-status {rateClass(t.trend.slopePerWeek)}">
 						{rateLabel(t.trend.slopePerWeek)}
@@ -127,6 +128,12 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+
+		<!-- Trend Line Chart -->
+		<div class="card">
+			<h2>{selectedTrend.label} Trend Chart</h2>
+			<TrendLineChart entries={data.entries} trend={selectedTrend.trend} windowLabel={selectedTrend.label} projections={selectedTrend.projections} />
 		</div>
 
 		<!-- Trend Details -->
@@ -209,7 +216,7 @@
 	/* ---- Trend cards row ---- */
 	.trend-cards {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+		grid-template-columns: repeat(3, 1fr);
 		gap: 0.75rem;
 		margin-bottom: 1.5rem;
 	}

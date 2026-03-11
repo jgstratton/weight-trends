@@ -44,6 +44,7 @@ export interface TrendWithProjections {
 
 /** Named time windows */
 export const TREND_WINDOWS = [
+	{ label: '7 Day', days: 7 },
 	{ label: '30 Day', days: 30 },
 	{ label: '90 Day', days: 90 },
 	{ label: '6 Month', days: 183 },
