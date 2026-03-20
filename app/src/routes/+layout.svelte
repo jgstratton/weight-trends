@@ -42,6 +42,12 @@
 					class:nav-link-active={$page.url.pathname === '/import'}
 					onclick={() => (menuOpen = false)}
 				>Import CSV</a>
+				<a
+					href="/settings"
+					class="nav-link"
+					class:nav-link-active={$page.url.pathname === '/settings'}
+					onclick={() => (menuOpen = false)}
+				>Settings</a>
 				<span class="nav-email">{data.user.email}</span>
 				<form method="POST" action="/logout">
 					<button type="submit">Logout</button>
@@ -52,3 +58,6 @@
 {/if}
 
 {@render children()}
+
+<style>
+</style>

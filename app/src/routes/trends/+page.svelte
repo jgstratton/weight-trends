@@ -133,7 +133,7 @@
 		<!-- Trend Line Chart -->
 		<div class="card">
 			<h2>{selectedTrend.label} Trend Chart</h2>
-			<TrendLineChart entries={data.entries} trend={selectedTrend.trend} windowLabel={selectedTrend.label} projections={selectedTrend.projections} />
+			<TrendLineChart entries={data.entries} trend={selectedTrend.trend} windowLabel={selectedTrend.label} projections={selectedTrend.projections} targetWeight={data.targetWeight} />
 		</div>
 
 		<!-- Trend Details -->

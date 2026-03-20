@@ -36,7 +36,18 @@ export const weights = pgTable('weights', {
 	createdAt: timestamp('created_at').notNull().defaultNow()
 });
 
+export const userSettings = pgTable('user_settings', {
+	id: uuid('id').primaryKey().defaultRandom(),
+	userId: uuid('user_id')
+		.notNull()
+		.unique()
+		.references(() => users.id, { onDelete: 'cascade' }),
+	targetWeight: numeric('target_weight', { precision: 6, scale: 2 }),
+	updatedAt: timestamp('updated_at').notNull().defaultNow()
+});
+
 export type User = typeof users.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 export type OtpToken = typeof otpTokens.$inferSelect;
 export type Weight = typeof weights.$inferSelect;
+export type UserSettings = typeof userSettings.$inferSelect;
